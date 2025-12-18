@@ -20,14 +20,15 @@ const ItemList = ({ items, onMsgClick, selectedSort }) => {
   }, [items]);
 
   useEffect(() => {
-    let newItems = [...items];
-    console.log(items.price)
-    
+    let newItems = [...items];    
     if(selectedSort === 'lowtohigh'){
-      newItems.sort((a, b) => a.price - b.price)
+      newItems.sort((a, b) => a.price - b.price);
     }
     if(selectedSort === 'hightolow'){
-      newItems.sort((a, b) => b.price - a.price)
+      newItems.sort((a, b) => b.price - a.price);
+    }
+    if(selectedSort === 'newest'){
+      newItems.sort((a, b) => parseInt(b.created_at) - parseInt(a.created_at)); 
     }
     
     
@@ -61,7 +62,7 @@ const ItemList = ({ items, onMsgClick, selectedSort }) => {
           itemPhoto={item.item_photo}
           productName={`${item.car_year} ${item.car_make} ${item.car_model}`}
           price={item.price}
-          location={item.location}
+          location={item.created_at}
           description={item.description}
           mileage={item.mileage}
           onMsgClick={() => onMsgClick(item)}
