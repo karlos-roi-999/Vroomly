@@ -1,9 +1,13 @@
 import { Link } from 'react-router-dom';
 
-const SideBar = () => {
+const SideBar = ({setSelectedSort}) => {
   const sectionStyle = { marginBottom: '1.5rem' };
   const labelStyle = { display: 'block', marginBottom: '0.5rem', color: '#505a5b', fontSize: '0.95rem', cursor: 'pointer' };
   const headerStyle = { fontSize: '1rem', fontWeight: '600', color: '#343f3e', marginBottom: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.5rem' };
+
+  const handleSortChange = (event) => {
+    setSelectedSort(event.target.value)
+  }
 
   return (
     <aside style={{ 
@@ -21,9 +25,9 @@ const SideBar = () => {
         <div style={sectionStyle}>
           <div style={headerStyle}><i className="fa-solid fa-sort"></i> Sort By</div>
           <div>
-            <label style={labelStyle}><input type="radio" name="sort" value="lowtohigh" defaultChecked style={{marginRight: '8px'}} /> Price: Low to High</label>
-            <label style={labelStyle}><input type="radio" name="sort" value="hightolow" style={{marginRight: '8px'}} /> Price: High to Low</label>
-            <label style={labelStyle}><input type="radio" name="sort" value="newest" style={{marginRight: '8px'}} /> Newest First</label>
+            <label style={labelStyle}><input type="radio" name="sort" value="lowtohigh" onChange={handleSortChange} style={{marginRight: '8px'}} /> Price: Low to High</label>
+            <label style={labelStyle}><input type="radio" name="sort" value="hightolow" onChange={handleSortChange} style={{marginRight: '8px'}} /> Price: High to Low</label>
+            <label style={labelStyle}><input type="radio" name="sort" value="newest" onChange={handleSortChange} style={{marginRight: '8px'}} /> Newest First</label>
           </div>
         </div>
 

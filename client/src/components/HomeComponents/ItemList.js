@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import ItemCard from './ItemCard';
 import Spinner from './Spinner';
 
-const ItemList = ({ items, onMsgClick }) => {
+const ItemList = ({ items, onMsgClick, selectedSort }) => {
 
   const [loading, setLoading] = useState(true);
+  const [sortedItems, setSortedItems] = useState(items);
 
   useEffect(() => {
     if (items || items.length > 0){
@@ -18,6 +19,21 @@ const ItemList = ({ items, onMsgClick }) => {
 
   }, [items]);
 
+  useEffect(() => {
+    let newItems = [...items];
+    console.log(items.price)
+    
+    if(selectedSort === 'lowtohigh'){
+      newItems.sort((a, b) => a.price - b.price)
+    }
+    if(selectedSort === 'hightolow'){
+      newItems.sort((a, b) => b.price - a.price)
+    }
+    
+    
+    setSortedItems(newItems);
+  }, [selectedSort, items]);
+
   if (loading){
     return <Spinner></Spinner>
   }
@@ -30,6 +46,7 @@ const ItemList = ({ items, onMsgClick }) => {
     );
   }
 
+
   return (
     <div style={{
       display: 'grid',
@@ -37,7 +54,7 @@ const ItemList = ({ items, onMsgClick }) => {
       gap: '2rem',
       width: '100%'
     }}>
-      {items.map((item, idx) => (
+      {sortedItems.map((item, idx) => (
         <ItemCard
           key={item.id || idx}
           itemId={item.id}
