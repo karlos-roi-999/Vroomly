@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import ItemCard from './ItemCard';
 import Spinner from './Spinner';
 
-const ItemList = ({ items, onMsgClick, selectedSort }) => {
+const ItemList = ({ items, onMsgClick, selectedSort, minPrice, maxPrice }) => {
 
   const [loading, setLoading] = useState(true);
   const [sortedItems, setSortedItems] = useState(items);
@@ -17,10 +17,16 @@ const ItemList = ({ items, onMsgClick, selectedSort }) => {
     }, 2000);
     return () => clearTimeout(timer);
 
-  }, [items]);
+  },  [items]);
 
   useEffect(() => {
     let newItems = [...items];    
+
+    newItems = newItems.filter(item =>
+      (!minPrice || item.price >= minPrice) &&
+      (!maxPrice || item.price <= maxPrice)
+    )
+
     if(selectedSort === 'lowtohigh'){
       newItems.sort((a, b) => a.price - b.price);
     }
@@ -30,10 +36,8 @@ const ItemList = ({ items, onMsgClick, selectedSort }) => {
     if(selectedSort === 'newest'){
       newItems.sort((a, b) => parseInt(b.created_at) - parseInt(a.created_at)); 
     }
-    
-    
     setSortedItems(newItems);
-  }, [selectedSort, items]);
+  }, [selectedSort, items, minPrice, maxPrice]);
 
   if (loading){
     return <Spinner></Spinner>
@@ -62,7 +66,7 @@ const ItemList = ({ items, onMsgClick, selectedSort }) => {
           itemPhoto={item.item_photo}
           productName={`${item.car_year} ${item.car_make} ${item.car_model}`}
           price={item.price}
-          location={item.created_at}
+          location={item.location}
           description={item.description}
           mileage={item.mileage}
           onMsgClick={() => onMsgClick(item)}

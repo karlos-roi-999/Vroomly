@@ -1,12 +1,20 @@
 import { Link } from 'react-router-dom';
 
-const SideBar = ({setSelectedSort}) => {
+const SideBar = ({setSelectedSort, setMinPrice, setMaxPrice, minPrice, maxPrice}) => {
   const sectionStyle = { marginBottom: '1.5rem' };
   const labelStyle = { display: 'block', marginBottom: '0.5rem', color: '#505a5b', fontSize: '0.95rem', cursor: 'pointer' };
   const headerStyle = { fontSize: '1rem', fontWeight: '600', color: '#343f3e', marginBottom: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.5rem' };
 
   const handleSortChange = (event) => {
     setSelectedSort(event.target.value)
+  }
+
+  const handleMinPriceChange = (e) => {
+    setMinPrice(parseFloat(e.target.value));
+  }
+
+  const handleMaxPriceChange = (e) => {
+    setMaxPrice(parseFloat(e.target.value));
   }
 
   return (
@@ -25,17 +33,17 @@ const SideBar = ({setSelectedSort}) => {
         <div style={sectionStyle}>
           <div style={headerStyle}><i className="fa-solid fa-sort"></i> Sort By</div>
           <div>
+            <label style={labelStyle}><input type="radio" name="sort" value="newest" defaultChecked onChange={handleSortChange} style={{marginRight: '8px'}} /> Newest First</label>
             <label style={labelStyle}><input type="radio" name="sort" value="lowtohigh" onChange={handleSortChange} style={{marginRight: '8px'}} /> Price: Low to High</label>
             <label style={labelStyle}><input type="radio" name="sort" value="hightolow" onChange={handleSortChange} style={{marginRight: '8px'}} /> Price: High to Low</label>
-            <label style={labelStyle}><input type="radio" name="sort" value="newest" onChange={handleSortChange} style={{marginRight: '8px'}} /> Newest First</label>
           </div>
         </div>
 
         <div style={sectionStyle}>
           <div style={headerStyle}><i className="fa-solid fa-tag"></i> Price Range</div>
           <div style={{display: 'flex', gap: '0.5rem'}}>
-            <input className="input-focus" type="number" name="minPrice" placeholder="Min" defaultValue="0" style={{ width: '100%', padding: '8px', borderRadius: '8px', border: '1px solid #8f91a2' }} />
-            <input className="input-focus" type="number" name="maxPrice" placeholder="Max" defaultValue="10000" style={{ width: '100%', padding: '8px', borderRadius: '8px', border: '1px solid #8f91a2' }} />
+            <input className="input-focus" type="number" name="minPrice" placeholder="Min" value={minPrice} onChange={handleMinPriceChange} style={{ width: '100%', padding: '8px', borderRadius: '8px', border: '1px solid #8f91a2' }} />
+            <input className="input-focus" type="number" name="maxPrice" placeholder="Max" value={maxPrice} onChange={handleMaxPriceChange} style={{ width: '100%', padding: '8px', borderRadius: '8px', border: '1px solid #8f91a2' }} />
           </div>
         </div>
 

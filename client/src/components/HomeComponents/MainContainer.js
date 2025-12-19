@@ -5,12 +5,14 @@ import { useState } from 'react';
 const MainContainer = ({listings}) => {
 
   const [selectedSort, setSelectedSort] = useState("");
+  const [minPrice, setMinPrice] = useState();
+  const [maxPrice, setMaxPrice] = useState();
 
   return (
     <div style={{ display: 'flex', flexDirection: 'row', width: '100%', boxSizing:'border-box', maxWidth: '1400px', margin: '0 auto', padding: '2rem' }}>
-      <SideBar setSelectedSort={setSelectedSort}/>
+      <SideBar setSelectedSort={setSelectedSort} setMinPrice={setMinPrice} setMaxPrice={setMaxPrice} minPrice={minPrice} maxPrice={maxPrice}/>
       <div style={{ flex: 1 }} id='itemsContainer'>
-        <ItemList items={listings} selectedSort={selectedSort}/>
+        <ItemList items={listings} selectedSort={selectedSort} minPrice={minPrice} maxPrice={maxPrice}/>
       </div>
     </div>
   );
