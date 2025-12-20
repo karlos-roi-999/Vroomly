@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom';
 
-const SideBar = ({setSelectedSort, setMinPrice, setMaxPrice, minPrice, maxPrice}) => {
+const SideBar = ({setSelectedSort, setMinPrice, setMaxPrice, minPrice, maxPrice, listings, setSelectedMakes}) => {
   const sectionStyle = { marginBottom: '1.5rem' };
   const labelStyle = { display: 'block', marginBottom: '0.5rem', color: '#505a5b', fontSize: '0.95rem', cursor: 'pointer' };
   const headerStyle = { fontSize: '1rem', fontWeight: '600', color: '#343f3e', marginBottom: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.5rem' };
+  const makes = [...new Set(listings.map(car => car.car_make))];
 
   const handleSortChange = (event) => {
     setSelectedSort(event.target.value)
@@ -15,6 +16,15 @@ const SideBar = ({setSelectedSort, setMinPrice, setMaxPrice, minPrice, maxPrice}
 
   const handleMaxPriceChange = (e) => {
     setMaxPrice(parseFloat(e.target.value));
+  }
+
+  const handleMakesSelect = (e) => {
+    if(e.target.checked){ 
+      setSelectedMakes(prev => [...prev, e.target.value]);
+    }
+    else {
+      setSelectedMakes(prev => prev.filter(item => item !== e.target.value));
+    }
   }
 
   return (
@@ -49,9 +59,9 @@ const SideBar = ({setSelectedSort, setMinPrice, setMaxPrice, minPrice, maxPrice}
 
         <div style={sectionStyle}>
           <div style={headerStyle}><i className="fa-solid fa-car"></i> Make</div>
-          {['Toyota', 'Honda', 'Ford', 'GMC'].map(make => (
-             <label key={make} style={labelStyle}>
-               <input type="checkbox" name="make" value={make} style={{marginRight: '8px'}} /> {make}
+          {makes.map((car, index) => (
+             <label key={index} style={labelStyle} htmlFor={index}>
+               <input id={index} type="checkbox" name="make" value={car} style={{marginRight: '8px'}} onChange={handleMakesSelect}/> {car}
              </label>
           ))}
         </div>

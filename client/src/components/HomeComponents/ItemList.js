@@ -2,10 +2,13 @@ import React, { useEffect, useState } from 'react';
 import ItemCard from './ItemCard';
 import Spinner from './Spinner';
 
-const ItemList = ({ items, onMsgClick, selectedSort, minPrice, maxPrice }) => {
+const ItemList = ({ items, onMsgClick, selectedSort, minPrice, maxPrice, selectedMakes }) => {
 
   const [loading, setLoading] = useState(true);
   const [sortedItems, setSortedItems] = useState(items);
+  
+  const [debouncedMin, setDebouncedMin] = useState(minPrice);
+  const [debouncedMax, setDebouncedMax] = useState(maxPrice);
 
   useEffect(() => {
     if (items || items.length > 0){
@@ -20,12 +23,23 @@ const ItemList = ({ items, onMsgClick, selectedSort, minPrice, maxPrice }) => {
   },  [items]);
 
   useEffect(() => {
+    setTimeout(() => {
+      setDebouncedMin(minPrice);
+      setDebouncedMax(maxPrice);
+    }, 1500);
+  }, [minPrice, maxPrice])
+
+  useEffect(() => {
     let newItems = [...items];    
 
     newItems = newItems.filter(item =>
-      (!minPrice || item.price >= minPrice) &&
-      (!maxPrice || item.price <= maxPrice)
-    )
+      (!debouncedMin || item.price >= debouncedMin) &&
+      (!debouncedMax || item.price <= debouncedMax)
+    );
+
+    if (selectedMakes.length > 0){
+      newItems = newItems.filter(item => selectedMakes.includes(item.car_make));
+    }
 
     if(selectedSort === 'lowtohigh'){
       newItems.sort((a, b) => a.price - b.price);
@@ -37,13 +51,13 @@ const ItemList = ({ items, onMsgClick, selectedSort, minPrice, maxPrice }) => {
       newItems.sort((a, b) => parseInt(b.created_at) - parseInt(a.created_at)); 
     }
     setSortedItems(newItems);
-  }, [selectedSort, items, minPrice, maxPrice]);
+  }, [selectedSort, items, debouncedMin, debouncedMax, selectedMakes]);
 
   if (loading){
     return <Spinner></Spinner>
   }
 
-  if(!items || items.length === 0){
+  if(!sortedItems || sortedItems.length === 0){
     return (
         <div style={{width: '100%', textAlign: 'center', padding: '2rem', color: '#8f91a2'}}>
             <h3>No listings found.</h3>
