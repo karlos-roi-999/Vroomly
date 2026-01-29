@@ -1,7 +1,13 @@
-import React, { useState, useEffect } from 'react';
 import ChatsBar from '../components/ChatsPageComponents/ChatsBar';
 import Navbar from '../components/HomeComponents/Navbar';
 import ChatContainer from '../components/ChatsPageComponents/ChatContainer';
+import { io } from 'socket.io-client'
+
+const socket = io('http://localhost:5000');
+
+socket.on('connect', () => {
+  console.log(`Connected to: ${socket.id}` );
+})
 
 const ChatsPage = () => {
 

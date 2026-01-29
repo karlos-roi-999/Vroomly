@@ -27,6 +27,10 @@ const SideBar = ({setSelectedSort, setMinPrice, setMaxPrice, minPrice, maxPrice,
     }
   }
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  }
+
   return (
     <aside style={{ 
       flexBasis: '250px', 
@@ -38,7 +42,7 @@ const SideBar = ({setSelectedSort, setMinPrice, setMaxPrice, minPrice, maxPrice,
       height: 'fit-content',
       boxShadow: '0 2px 12px rgba(0,0,0,0.03)'
     }}>
-      <form style={{display:'flex', flexDirection:'column', width:'100%'}}>
+      <form style={{display:'flex', flexDirection:'column', width:'100%'}} onSubmit={handleSubmit}>
         
         <div style={sectionStyle}>
           <div style={headerStyle}><i className="fa-solid fa-sort"></i> Sort By</div>
@@ -71,17 +75,6 @@ const SideBar = ({setSelectedSort, setMinPrice, setMaxPrice, minPrice, maxPrice,
           <input className="input-focus" type="text" name="location" placeholder="City or Zip" style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #8f91a2' }} />
         </div>
 
-        <button className="btn-primary" type="submit" style={{
-          width: '100%',
-          padding: '12px',
-          backgroundColor: '#343f3e',
-          color: 'white',
-          border: 'none',
-          borderRadius: '8px',
-          fontWeight: '600',
-          cursor: 'pointer',
-          marginBottom: '1rem'
-        }}>Apply Filters</button>
       </form>
       
       <div style={{borderTop: '1px solid #dcedff', paddingTop: '1rem'}}>
@@ -89,8 +82,8 @@ const SideBar = ({setSelectedSort, setMinPrice, setMaxPrice, minPrice, maxPrice,
             <button className="btn-primary" style={{
                 width:'100%', 
                 padding: '12px', 
-                backgroundColor: 'white', 
-                color: '#343f3e', 
+                backgroundColor: '#343f3e', 
+                color: 'white', 
                 border: '1px solid #343f3e', 
                 borderRadius: '8px', 
                 fontWeight: '600',

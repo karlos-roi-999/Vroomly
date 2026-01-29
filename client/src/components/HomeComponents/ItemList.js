@@ -22,11 +22,12 @@ const ItemList = ({ items, onMsgClick, selectedSort, minPrice, maxPrice, selecte
 
   },  [items]);
 
+  // Debounce the filter price function by using these variables instead
   useEffect(() => {
     setTimeout(() => {
       setDebouncedMin(minPrice);
       setDebouncedMax(maxPrice);
-    }, 1500);
+    }, 1000);
   }, [minPrice, maxPrice])
 
   useEffect(() => {
