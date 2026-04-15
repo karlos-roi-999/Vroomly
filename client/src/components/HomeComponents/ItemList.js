@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import ItemCard from './ItemCard';
 import Spinner from './Spinner';
 
-const ItemList = ({ items, onMsgClick, selectedSort, minPrice, maxPrice, selectedMakes }) => {
+const ItemList = ({ items, onMsgClick, selectedSort, minPrice, maxPrice, selectedMakes, selectedCities }) => {
 
   const [loading, setLoading] = useState(true);
   const [sortedItems, setSortedItems] = useState(items);
@@ -27,7 +27,7 @@ const ItemList = ({ items, onMsgClick, selectedSort, minPrice, maxPrice, selecte
       setDebouncedMin(minPrice);
       setDebouncedMax(maxPrice);
     }, 1500);
-  }, [minPrice, maxPrice])
+  }, [minPrice, maxPrice]);
 
   useEffect(() => {
     let newItems = [...items];    
@@ -50,8 +50,14 @@ const ItemList = ({ items, onMsgClick, selectedSort, minPrice, maxPrice, selecte
     if(selectedSort === 'newest'){
       newItems.sort((a, b) => parseInt(b.created_at) - parseInt(a.created_at)); 
     }
+
+    if(selectedCities && selectedCities.trim() !== '') {
+      newItems = newItems.filter(item =>
+      item.location?.toLowerCase().includes(selectedCities.toLowerCase()));
+    }
+
     setSortedItems(newItems);
-  }, [selectedSort, items, debouncedMin, debouncedMax, selectedMakes]);
+  }, [selectedSort, items, debouncedMin, debouncedMax, selectedMakes, selectedCities]);
 
   if (loading){
     return <Spinner></Spinner>

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-const SideBar = ({setSelectedSort, setMinPrice, setMaxPrice, minPrice, maxPrice, listings, setSelectedMakes}) => {
+const SideBar = ({setSelectedSort, setMinPrice, setMaxPrice, minPrice, maxPrice, listings, setSelectedMakes, setSelectedCities}) => {
   const sectionStyle = { marginBottom: '1.5rem' };
   const labelStyle = { display: 'block', marginBottom: '0.5rem', color: '#505a5b', fontSize: '0.95rem', cursor: 'pointer' };
   const headerStyle = { fontSize: '1rem', fontWeight: '600', color: '#343f3e', marginBottom: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.5rem' };
@@ -27,6 +27,14 @@ const SideBar = ({setSelectedSort, setMinPrice, setMaxPrice, minPrice, maxPrice,
     }
   }
 
+  const handleCityChange = (e) => {
+    setSelectedCities(e.target.value)
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+  }
+
   return (
     <aside style={{ 
       flexBasis: '250px', 
@@ -38,7 +46,7 @@ const SideBar = ({setSelectedSort, setMinPrice, setMaxPrice, minPrice, maxPrice,
       height: 'fit-content',
       boxShadow: '0 2px 12px rgba(0,0,0,0.03)'
     }}>
-      <form style={{display:'flex', flexDirection:'column', width:'100%'}}>
+      <form style={{display:'flex', flexDirection:'column', width:'100%'}} onSubmit={handleSubmit}>
         
         <div style={sectionStyle}>
           <div style={headerStyle}><i className="fa-solid fa-sort"></i> Sort By</div>
@@ -68,10 +76,13 @@ const SideBar = ({setSelectedSort, setMinPrice, setMaxPrice, minPrice, maxPrice,
 
         <div style={sectionStyle}>
           <div style={headerStyle}><i className="fa-solid fa-map-pin"></i> Location</div>
-          <input className="input-focus" type="text" name="location" placeholder="City or Zip" style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #8f91a2' }} />
+          <input className="input-focus" type="text" name="location" onChange={handleCityChange} placeholder="City or Zip" style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #8f91a2' }}/>
         </div>
-
-        <button className="btn-primary" type="submit" style={{
+      </form>
+      
+      <div style={{borderTop: '1px solid #dcedff', paddingTop: '1rem'}}>
+        <Link to={'/selling'} style={{textDecoration: 'none'}}>
+            <button className="btn-primary" style={{
           width: '100%',
           padding: '12px',
           backgroundColor: '#343f3e',
@@ -81,21 +92,7 @@ const SideBar = ({setSelectedSort, setMinPrice, setMaxPrice, minPrice, maxPrice,
           fontWeight: '600',
           cursor: 'pointer',
           marginBottom: '1rem'
-        }}>Apply Filters</button>
-      </form>
-      
-      <div style={{borderTop: '1px solid #dcedff', paddingTop: '1rem'}}>
-        <Link to={'/selling'} style={{textDecoration: 'none'}}>
-            <button className="btn-primary" style={{
-                width:'100%', 
-                padding: '12px', 
-                backgroundColor: 'white', 
-                color: '#343f3e', 
-                border: '1px solid #343f3e', 
-                borderRadius: '8px', 
-                fontWeight: '600',
-                cursor: 'pointer'
-            }}>
+        }}>
                 <i className="fa-solid fa-plus"></i> Sell Your Car
             </button>
         </Link>
