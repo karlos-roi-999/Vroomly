@@ -11,6 +11,7 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 import ManageListings from './pages/ManageListings';
 import EditListing from './components/ManagePageComponents/EditListing';
+import { SocketProvider } from './SocketContext';
 axios.defaults.withCredentials = true;
 
 
@@ -68,17 +69,19 @@ function App() {
   }, [refreshTrigger]);
 
   return (
-    <Routes>
-      <Route path='/' element={<Home listings={listings} userLoggedIn={userLoggedIn}/>} exact/>
-      <Route path='/chats' element={<ChatsPage/>}/>
-      <Route path='/selling' element={<SellingPage userLoggedIn={userLoggedIn}/>}/>
-      <Route path='/selling/create-listing' element={<SellForm addListing={addListing} refresh={refresh}/>}/>
-      <Route path='/login' element={<Login refresh={refresh}/>}/>
-      <Route path='/sign-up' element={<SignUp/>}/>
-      <Route path='/selling/manage-listings' element={<ManageListings refreshTrigger={refreshTrigger} setRefreshTrigger={setRefreshTrigger}/>}/>
-      <Route path='/view-listing/:id' element={<ViewListing/>}/>
-      <Route path='/selling/manage-listings/edit-listing/:id' element={<EditListing refresh={refresh}/>}/>
-    </Routes>
+    <SocketProvider userId={userLoggedIn.loggedIn? userLoggedIn.user.id : null}>
+      <Routes>
+        <Route path='/' element={<Home listings={listings} userLoggedIn={userLoggedIn}/>} exact/>
+        <Route path='/chats' element={<ChatsPage/>}/>
+        <Route path='/selling' element={<SellingPage userLoggedIn={userLoggedIn}/>}/>
+        <Route path='/selling/create-listing' element={<SellForm addListing={addListing} refresh={refresh}/>}/>
+        <Route path='/login' element={<Login refresh={refresh}/>}/>
+        <Route path='/sign-up' element={<SignUp/>}/>
+        <Route path='/selling/manage-listings' element={<ManageListings refreshTrigger={refreshTrigger} setRefreshTrigger={setRefreshTrigger}/>}/>
+        <Route path='/view-listing/:id' element={<ViewListing/>}/>
+        <Route path='/selling/manage-listings/edit-listing/:id' element={<EditListing refresh={refresh}/>}/>
+      </Routes>
+    </SocketProvider>
   );
 }
 

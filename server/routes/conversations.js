@@ -82,46 +82,4 @@ router.get('/:listingId/:otherUserId/messages', requireAuth, async (req, res) =>
     }
 });
 
-// POST — start a new conversation / send a first message
-router.post('/', requireAuth, async (req, res) => {
-    const buyerId = req.session.user.id;
-    const { listing_id, message } = req.body;
-
-    if (!listing_id || !message) {
-        return res.status(400).json({ message: 'listing_id and message are required' });
-    }
-
-    try {
-        // Look up listing owner
-        const listingResult = await db.query(`SELECT user_id FROM listings WHERE id = $1`, [listing_id]);
-        if (listingResult.rows.length === 0) {
-            return res.status(404).json({ message: 'Listing not found' });
-        }
-        const sellerId = listingResult.rows[0].user_id;
-
-        if (sellerId === buyerId) {
-            return res.status(400).json({ message: 'Cannot message yourself' });
-        }
-
-        // Insert the first message
-        const { rows } = await db.query(`
-            INSERT INTO messages (sender_id, receiver_id, listing_id, content)
-            VALUES ($1, $2, $3, $4)
-            RETURNING *
-        `, [buyerId, sellerId, listing_id, message]);
-
-        res.status(201).json({
-            message: 'Conversation started',
-            data: rows[0],
-            conversation: {
-                listing_id: parseInt(listing_id),
-                other_user_id: sellerId
-            }
-        });
-    } catch (err) {
-        console.error('Error creating conversation:', err);
-        res.status(500).json({ error: 'Server error' });
-    }
-});
-
 module.exports = router;

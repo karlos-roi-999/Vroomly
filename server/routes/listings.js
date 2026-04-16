@@ -33,7 +33,10 @@ router.get('/:id', async (req, res) => {
         const listingId = parseInt(req.params.id);
 
         const { rows } = await db.query(
-            `SELECT * FROM listings WHERE id = $1`
+            `SELECT l.*, u.username AS seller_username
+             FROM listings l
+             JOIN users u ON u.id = l.user_id
+             WHERE l.id = $1`
             , [listingId]
         );
 

@@ -8,7 +8,7 @@ const MainContainer = ({listings}) => {
   const [minPrice, setMinPrice] = useState();
   const [maxPrice, setMaxPrice] = useState();
   const [selectedMakes, setSelectedMakes] = useState([]);
-  const [selectedCities, setSelectedCities] = useState([]);
+  const [selectedCities, setSelectedCities] = useState();
 
   return (
     <div style={{ display: 'flex', flexDirection: 'row', width: '100%', boxSizing:'border-box', maxWidth: '1400px', margin: '0 auto', padding: '2rem' }}>
